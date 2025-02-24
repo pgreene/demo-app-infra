@@ -1,7 +1,7 @@
 module "cloudwatch_metric_alarm_db" {
-  source  = "app.terraform.io/pgconsulting/cloudwatch-metric-alarm/aws"
+  source = "app.terraform.io/pgconsulting/cloudwatch-metric-alarm/aws"
   version = "1.0.0"
-  name = local.name
+  name = join("-",[local.name,"read-iops"])
   metric_name = "VolumeReadIOPs"
   metric_namespace = "AWS/RDS"
   alarm_description = "Volume Read IOPS"
@@ -12,9 +12,9 @@ module "cloudwatch_metric_alarm_db" {
   treat_missing_data = "notBreaching"
   statistic = "Average"
   threshold = "1000"
-  insufficient_data_actions = [data.aws_sns_topic.sev2.arn]
-  alarm_actions = [data.aws_sns_topic.sev2.arn]
-  ok_actions = [data.aws_sns_topic.sev2.arn]
+  insufficient_data_actions = [data.aws_sns_topic.sev1.arn]
+  alarm_actions = [data.aws_sns_topic.sev1.arn]
+  ok_actions = [data.aws_sns_topic.sev1.arn]
   dimensions = {DBClusterIdentifier = module.aws_rds_cluster_aurora_serverless.id}
   tags = local.tags
   depends_on = [

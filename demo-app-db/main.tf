@@ -1,5 +1,5 @@
 module "rds_db_subnet_group" {
-  source  = "app.terraform.io/pgconsulting/db-subnet-group/aws"
+  source = "app.terraform.io/pgconsulting/db-subnet-group/aws"
   version = "1.0.0"
   name = local.name
   subnet_ids = [data.aws_subnets.private.ids[0],data.aws_subnets.private.ids[1],data.aws_subnets.private.ids[2]]
@@ -7,7 +7,7 @@ module "rds_db_subnet_group" {
 }
 
 module "kms" {
-  source  = "app.terraform.io/pgconsulting/kms/aws"
+  source = "app.terraform.io/pgconsulting/kms/aws"
   version = "1.0.1"
   description = "used for demo-app database"
   kms_is_enabled = true
@@ -17,7 +17,7 @@ module "kms" {
 }
 
 module "aws_sg_db" {
-  source  = "app.terraform.io/pgconsulting/security-group/aws"
+  source = "app.terraform.io/pgconsulting/security-group/aws"
   version = "1.0.0"
   name = local.name
   vpc_id = data.aws_vpc.selected.id
@@ -25,7 +25,7 @@ module "aws_sg_db" {
 }
 
 module "aws_sg_rule_db3306_ingress" {
-  source  = "app.terraform.io/pgconsulting/security-group-rule/aws"
+  source = "app.terraform.io/pgconsulting/security-group-rule/aws"
   version = "1.0.0"
   type = "ingress"
   cidr_blocks = [data.aws_vpc.selected.cidr_block]
@@ -36,7 +36,7 @@ module "aws_sg_rule_db3306_ingress" {
 }
 
 module "aws_sg_rule_db3306_egress" {
-  source  = "app.terraform.io/pgconsulting/security-group-rule/aws"
+  source = "app.terraform.io/pgconsulting/security-group-rule/aws"
   version = "1.0.0"
   type = "egress"
   cidr_blocks = [data.aws_vpc.selected.cidr_block]
@@ -47,7 +47,7 @@ module "aws_sg_rule_db3306_egress" {
 }
 
 module "aws_rds_cluster_parameter_group" {
-  source  = "app.terraform.io/pgconsulting/rds-cluster-parameter-group/aws"
+  source = "app.terraform.io/pgconsulting/rds-cluster-parameter-group/aws"
   version = "1.0.0"
   name = local.name
   family = "aurora-mysql8.0"
@@ -59,7 +59,7 @@ module "aws_rds_cluster_parameter_group" {
 }
 
 module "kms_ssm" {
-  source  = "app.terraform.io/pgconsulting/kms/aws"
+  source = "app.terraform.io/pgconsulting/kms/aws"
   version = "1.0.1"
   description = "used for database secret"
   kms_is_enabled = true
@@ -70,12 +70,11 @@ module "kms_ssm" {
 
 module "random_password" {
   source = "git::https://github.com/pgreene/random-password?ref=1.0.2"
-  #source = "git@github.com:pgreene/random-password.git?ref=v1.0.0"
   length = 24
 }
 
 module "ssm_parameter" {
-  source  = "app.terraform.io/pgconsulting/ssm-parameter/aws"
+  source = "app.terraform.io/pgconsulting/ssm-parameter/aws"
   version = "1.0.0"
   name = local.name
   value = module.random_password.result
@@ -85,7 +84,7 @@ module "ssm_parameter" {
 }
 
 module "aws_rds_cluster_aurora_serverless" {
-  source  = "app.terraform.io/pgconsulting/rds-cluster/aws"
+  source = "app.terraform.io/pgconsulting/rds-cluster/aws"
   version = "1.0.0"
   #name = join("-",[module.label.id])
   cluster_identifier = local.name
