@@ -106,10 +106,19 @@ module "aws_rds_cluster_aurora_serverless" {
   //enabled_cloudwatch_logs_exports = ["audit", "error"]
   //scaling_configuration_timeout_action = "ForceApplyCapacityChange" 
   skip_final_snapshot = false
-  final_snapshot_identifier = join("-",[local.env,local.prefix,"delete"])
-  backup_retention_period = 30
+  final_snapshot_identifier = join("-",[local.name,"delete"])
+  backup_retention_period = 7
   preferred_backup_window = null
   preferred_maintenance_window = null
   availability_zones = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
   tags = local.tags
+}
+
+module "rds_cluster_instance" {
+  source = "app.terraform.io/pgconsulting/rds-cluster-instance/aws"
+  version = "1.0.0"
+  cluster_identifier = module.aws_rds_cluster_aurora_serverless.id
+  instance_class = "db.serverless"
+  engine = module.aws_rds_cluster_aurora_serverless.engine
+  engine_version = module.aws_rds_cluster_aurora_serverless.engine_version_actual
 }
