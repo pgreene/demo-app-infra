@@ -1,0 +1,10 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Principal": {
+            "Service": ["ecs-tasks.amazonaws.com","ec2.amazonaws.com","ecs.amazonaws.com","replication.ecr.amazonaws.com","elasticfilesystem.amazonaws.com","iam.amazonaws.com","cloudwatch.amazonaws.com","ssm.amazonaws.com"]
+        },
+        "Action": "sts:AssumeRole"
+    }]
+}

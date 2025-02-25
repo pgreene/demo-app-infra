@@ -1,0 +1,23 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:*",
+                "ec2:*",
+                "ecr:*",
+                "ecs:*",
+                "elasticfilesystem:Client*",
+                "iam:Get*",
+                "iam:Pass*",
+                "kms:Decrypt",
+                "kms:List*",
+                "logs:*",
+                "secretsmanager:Get*",
+                "ssm:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
