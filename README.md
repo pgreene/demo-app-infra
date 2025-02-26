@@ -11,6 +11,10 @@ Backend in AWS for LAMP demo app
 
 Navigate into each directory and run `terraform init` & `terraform apply`
 
+Currently this only builds in my personal AWS Account and uses terraform cloud for the backend state file. Advantage? An interface / GUI for your infrastructure & it's versioned. 
+
+To run locally, you'll need an API token from terraform cloud.
+
 ## Resources
 
 * Database: RDS Aurora Serverless
