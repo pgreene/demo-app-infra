@@ -75,9 +75,9 @@ module "ecs_service" {
   health_check_grace_period_seconds = 300
   deployment_minimum_healthy_percent = 0
   load_balancer = {
-    target_group_arn = module.aws_lb_target_group_80.arn
+    target_group_arn = module.aws_lb_target_group_8080.arn
     container_name = "demo-app"
-    container_port = local.port
+    container_port = "8080"
     elb_name = ""
   }
   network_configuration = {
@@ -113,12 +113,12 @@ module "aws_alb" {
   tags = local.tags
 }
 
-module "aws_lb_target_group_80" {
+module "aws_lb_target_group_8080" {
   source = "app.terraform.io/pgconsulting/lb-target-group/aws"
   version = "1.0.0"
   name = local.name
   vpc_id = data.aws_vpc.selected.id
-  port = "80"
+  port = "8080"
   protocol = "HTTP"
   target_type = "ip"
   deregistration_delay = 10
@@ -126,7 +126,7 @@ module "aws_lb_target_group_80" {
     health_check_enabled = true
     health_check_interval = 30
     health_check_path = "/"
-    health_check_port = "traffic-port"
+    health_check_port = "8080"
     health_check_protocol = "HTTP"
     health_check_timeout = 3
     health_check_healthy_threshold = 3
@@ -136,17 +136,17 @@ module "aws_lb_target_group_80" {
   tags = local.tags
 }
 
-module "aws_lb_listener_forward_80to80" {
+module "aws_lb_listener_forward_80to8080" {
   source = "app.terraform.io/pgconsulting/lb-listener/aws"
   version = "1.0.0"
   port = "80"
   protocol = "HTTP"
   default_action_type = "forward"
   load_balancer_arn = module.aws_alb.arn
-  target_group_arn = module.aws_lb_target_group_80.arn
+  target_group_arn = module.aws_lb_target_group_8080.arn
 }
 
-module "aws_lb_listener_forward_443to80" {
+module "aws_lb_listener_forward_443to8080" {
   source = "app.terraform.io/pgconsulting/lb-listener/aws"
   version = "1.0.0"
   port = "443"
@@ -156,7 +156,7 @@ module "aws_lb_listener_forward_443to80" {
   certificate_arn = data.aws_acm_certificate.url.arn
   default_action_type = "forward"
   load_balancer_arn = module.aws_alb.arn
-  target_group_arn = module.aws_lb_target_group_80.arn
+  target_group_arn = module.aws_lb_target_group_8080.arn
 }
 
 module "aws_route53_ipv4" {

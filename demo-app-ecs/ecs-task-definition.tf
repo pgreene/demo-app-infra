@@ -54,7 +54,7 @@ module "ecs_task_definition" {
       ]
       portMappings = [
         {
-          containerPort = 80
+          containerPort = 8080
           #protocol = "tcp"
           #hostPort = 8080
         },

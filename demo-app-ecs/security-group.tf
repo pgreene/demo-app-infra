@@ -22,6 +22,18 @@ module "aws_sg_rule_80_ingress" {
   security_group_id = module.aws_sg.id
 }
 
+module "aws_sg_rule_8080_ingress" {
+  source = "app.terraform.io/pgconsulting/security-group-rule/aws"
+  version = "1.0.0"
+  type = "ingress"
+  cidr_blocks = ["0.0.0.0/0"]
+  ipv6_cidr_blocks = ["::/0"]
+  from_port = "8080"
+  to_port = "8080"
+  protocol = "tcp"
+  security_group_id = module.aws_sg.id
+}
+
 module "aws_sg_rule_443_ingress" {
   source = "app.terraform.io/pgconsulting/security-group-rule/aws"
   version = "1.0.0"
@@ -109,6 +121,17 @@ module "aws_app_sg_rule_80_ingress" {
   security_group_id = module.aws_app_sg.id
 }
 
+module "aws_app_sg_rule_8080_ingress" {
+  source = "app.terraform.io/pgconsulting/security-group-rule/aws"
+  version = "1.0.0"
+  type = "ingress"
+  #cidr_blocks = [data.aws_vpc.selected.cidr_block]
+  source_security_group_id = module.aws_sg.id
+  from_port = "8080"
+  to_port = "8080"
+  protocol = "tcp"
+  security_group_id = module.aws_app_sg.id
+}
 
 module "aws_app_sg_rule_all_egress" {
   source = "app.terraform.io/pgconsulting/security-group-rule/aws"
